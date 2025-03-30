@@ -1,29 +1,31 @@
-import React, { use, useEffect, useState } from 'react';
-import List, { IUser } from './types/List';
-import axios from 'axios';
-import UserItem from './components/UserItem';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import UserPage from "./components/UsersPage";
+import { NavLink } from "react-router-dom";
+import UserItemPage from "./components/UserItemPage";
 
 function App() {
-  const [users, setUsers] = useState<IUser[]>([])
-
- useEffect(() => {
-  fetchUsers()
- }, [])
-
- async function fetchUsers() {
-  try {
-    const responce = await axios.get<IUser[]>('https://jsonplaceholder.typicode.com/users')
-    setUsers(responce.data)
-  } catch(e) {
-    alert(e)
-  }
- }
-
+ 
   return (
-    <div className="App">
-     <List item={users}
-      renderItem={(user: IUser) => <UserItem user={user} key={user.id}/>}/>
-    </div>
+  
+    <BrowserRouter>
+    <nav style={{ padding: '20px' }}>
+      <NavLink 
+        to="/users"
+        style={({ isActive }) => ({
+          color: isActive ? 'blue' : 'gray',
+          marginRight: '15px'
+        })}
+      >
+        Пользователи
+      </NavLink>
+    </nav>
+    
+    <Routes>
+        <Route path="/users" element={<UserPage />} />
+        <Route path="/users/:id" element={<UserItemPage />} />
+    </Routes>
+  </BrowserRouter>
+
   );
 }
 
