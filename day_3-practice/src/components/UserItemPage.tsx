@@ -2,31 +2,18 @@ import React, { FC, useEffect, useState } from 'react'
 import { IUser } from '../types/List'
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useGetUserByIdQuery } from '../store/api';
 
 
-interface userIteamPageProps {
-    id: string;
-    [key: string]: string | undefined;
-}
 
 const UserItemPage: FC = () => {
 
-const [user, setUser] = useState<IUser | null>(null)
-const params = useParams<userIteamPageProps>()
+const { id } = useParams<{ id: string }>();
 const navigate = useNavigate()
 
-useEffect(() => {
-fetchUser()
-}, [])
-
-async function fetchUser() {
-    try {
-        const responce = await axios.get<IUser>('https://jsonplaceholder.typicode.com/users/' + params.id)
-        setUser(responce.data)
-    } catch(e) {
-        alert(e)
-    }
-}
+const { data: user, error, isLoading } = useGetUserByIdQuery(id ?? '', {
+    skip: !id, 
+  });
 
   return (
     <div>

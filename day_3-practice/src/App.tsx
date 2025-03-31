@@ -2,11 +2,13 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UserPage from "./components/UsersPage";
 import { NavLink } from "react-router-dom";
 import UserItemPage from "./components/UserItemPage";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 function App() {
  
   return (
-  
+  <Provider store = {store}>
     <BrowserRouter>
     <nav style={{ padding: '20px' }}>
       <NavLink 
@@ -25,6 +27,7 @@ function App() {
         <Route path="/users/:id" element={<UserItemPage />} />
     </Routes>
   </BrowserRouter>
+  </Provider>
 
   );
 }
